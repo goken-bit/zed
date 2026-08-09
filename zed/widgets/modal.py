@@ -14,7 +14,7 @@ class Modal(FloatLayout):
         self.on_close = None
         self.bind(size=self._dim)
         with self.canvas.before:
-            Color(0.0, 0.0, 0.0, 0)
+            self._dim_color = Color(0.0, 0.0, 0.0, 0)
             self._dim = Rectangle(size=self.size)
 
     def _dim(self, *a):
@@ -23,7 +23,7 @@ class Modal(FloatLayout):
     def open(self):
         self.visible = True
         self.opacity = 1
-        Animation(rgba=(0, 0, 0, 0.45), duration=0.22, t="out_cubic").start(self._dim)
+        Animation(rgba=(0, 0, 0, 0.45), duration=0.22, t="out_cubic").start(self._dim_color)
         if hasattr(self, "panel"):
             self.panel.opacity = 0
             self.panel.y = -self.panel.height - 20
@@ -42,7 +42,7 @@ class Modal(FloatLayout):
             a = Animation(opacity=0, y=self.panel.y - 30, duration=0.18, t="in_cubic")
             a.bind(on_complete=lambda *_: self._gone())
             a.start(self.panel)
-        anim.start(self._dim)
+        anim.start(self._dim_color)
         self._dim_anim = anim
 
     def _gone(self):

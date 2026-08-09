@@ -53,10 +53,14 @@ class Hoverable(ButtonBehavior, Widget):
         _ensure_hover_loop()
 
     def on_enter(self):
+        if not hasattr(self, "background_color"):
+            return
         Animation(background_color=self.hover_color, duration=0.15,
                   t="out_cubic").start(self)
 
     def on_leave(self):
+        if not hasattr(self, "background_color"):
+            return
         Animation(background_color=self.normal_color, duration=0.22,
                   t="out_cubic").start(self)
 

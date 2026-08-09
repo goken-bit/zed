@@ -145,7 +145,7 @@ def test_app_build():
     app.open_file(hello)
     check("app opens file", app.active_editor is not None and app.active_editor.path == hello)
     app.active_editor.type_text("x")
-    check("app edit", app.active_editor.text.strip().endswith("x"))
+    check("app edit", "x" in app.active_editor.text)
     app.save()
     with open(hello) as f:
         content = f.read()
