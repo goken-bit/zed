@@ -146,10 +146,11 @@ class ZedApp(App):
 
     def build(self):
         Window.clearcolor = Theme.bg
-        try:
-            Window.size = (430, 800)
-        except Exception:
-            pass
+        if not os.environ.get("ANDROID_ARGUMENT"):
+            try:
+                Window.size = (430, 800)
+            except Exception:
+                pass
         base = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                             ".zed", "settings.json")
         self.settings = Settings(base)
