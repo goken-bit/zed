@@ -30,18 +30,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Build APK
-        uses: ArtemSBulgakov/buildozer-action@v1.2.0
-        with:
-          command: buildozer android debug
-          buildozer_version: master
+      - name: Build APK with kivy/buildozer
+        run: |
+          mkdir -p ~/.buildozer
+          docker run --rm \
+            -v "$HOME/.buildozer":/home/user/.buildozer \
+            -v "$PWD":/home/user/hostcwd \
+            ghcr.io/kivy/buildozer:latest \
+            buildozer android debug
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
