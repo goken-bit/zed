@@ -8,12 +8,21 @@ FONT_MONO = os.path.join(FONT_DIR, "DejaVuSansMono.ttf")
 FONT_MONO_BOLD = os.path.join(FONT_DIR, "DejaVuSansMono-Bold.ttf")
 FONT_UI = os.path.join(FONT_DIR, "DejaVuSans.ttf")
 
-for _p in (FONT_MONO, FONT_MONO_BOLD, FONT_UI):
-    if not os.path.exists(_p):
-        FONT_MONO = "RobotoMono"
-        FONT_MONO_BOLD = "RobotoMono"
-        FONT_UI = "Roboto"
-        break
+
+def _is_font(path):
+    try:
+        with open(path, "rb") as f:
+            head = f.read(4)
+        return head in (b"\x00\x01\x00\x00", b"OTTO", b"ttcf")
+    except Exception:
+        return False
+
+
+if not (_is_font(FONT_MONO) and _is_font(FONT_MONO_BOLD)
+        and _is_font(FONT_UI)):
+    FONT_MONO = "RobotoMono"
+    FONT_MONO_BOLD = "RobotoMono"
+    FONT_UI = "Roboto"
 
 
 def rgba(hex_color, alpha=1.0):

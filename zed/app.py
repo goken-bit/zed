@@ -154,7 +154,7 @@ class ZedApp(App):
                             ".zed", "settings.json")
         self.settings = Settings(base)
         self._apply_settings()
-        self.workdir = os.getcwd()
+        self.workdir = os.environ.get("ANDROID_ARGUMENT") or os.getcwd()
 
         self.root = FloatLayout()
         self.column = BoxLayout(orientation="vertical", spacing=0, size_hint=(1, 1))
