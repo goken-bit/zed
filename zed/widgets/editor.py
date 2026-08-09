@@ -282,11 +282,11 @@ class CodeEditor(ScrollView):
         self._blink_job = None
         if self._caret_visible:
             self._caret_visible = False
-            Animation(self._caret_color, rgba=(*Theme.caret[:3], 0.0),
+            Animation(rgba=(*Theme.caret[:3], 0.0),
                       duration=0.2).start(self._caret_color)
         else:
             self._caret_visible = True
-            Animation(self._caret_color, rgba=(*Theme.caret[:3], 1.0),
+            Animation(rgba=(*Theme.caret[:3], 1.0),
                       duration=0.16).start(self._caret_color)
         self._blink_job = Clock.schedule_once(self._blink, 0.7)
 
