@@ -15,10 +15,10 @@ class Modal(FloatLayout):
         self.bind(size=self._dim)
         with self.canvas.before:
             self._dim_color = Color(0.0, 0.0, 0.0, 0)
-            self._dim = Rectangle(size=self.size)
+            self._dim_rect = Rectangle(size=self.size)
 
     def _dim(self, *a):
-        self._dim.size = self.size
+        self._dim_rect.size = self.size
 
     def open(self):
         self.visible = True
