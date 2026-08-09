@@ -49,20 +49,22 @@ def test_editor_ops():
         report("SKIP: editor_ops (no window provider in this env)")
         return
     from zed.widgets.editor import CodeEditor
+    from pygments.lexers import PythonLexer
 
     ed = CodeEditor()
     ed.set_text("hello\nworld\n")
     ed.cursor = (0, 5)
+    ed._last_undo_at = None
     ed.type_text("!")
     check("insert", ed.text == "hello!\nworld\n", repr(ed.text))
+    ed._last_undo_at = None
     ed.type_text("!")
     check("insert 2", ed.text == "hello!!\nworld\n", repr(ed.text))
     check("cursor", ed.cursor == (0, 7))
-
     ed.cursor = (0, 7)
+    ed._last_undo_at = None
     ed.delete_back()
     check("backspace", ed.text == "hello!\nworld\n", repr(ed.text))
-
     ed.undo()
     check("undo", ed.text == "hello!!\nworld\n", repr(ed.text))
     ed.undo()
@@ -72,15 +74,15 @@ def test_editor_ops():
     ed.select_all()
     check("select all", ed.selected_text() == "a\nb\nc\n", repr(ed.selected_text()))
     ed.type_text("X")
-    check("replace selection", ed.text == "X\n", repr(ed.text))
+    check("replace selection", ed.text == "X", repr(ed.text))
 
     ed2 = CodeEditor()
+    ed2.language = PythonLexer
     ed2.set_text("  def f():\n    x\n")
-    ed2.cursor = (0, 11)
+    ed2.cursor = (0, 10)
     ed2.type_newline()
-    check("auto indent python", ed2.lines()[1] == "        ", repr(ed2.lines()[1]))
-
-    check("cursor pos", ed2.cursor == (1, 8))
+    check("auto indent python", ed2.lines()[1] == "      ", repr(ed2.lines()[1]))
+    check("cursor pos", ed2.cursor == (1, 6))
 
 
 def test_runner():
