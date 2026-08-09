@@ -1,0 +1,49 @@
+name: Build Zed
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  lint-test:
+    name: Lint & Smoke Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Compile check
+        run: python -m compileall -q zed main.py tests
+      - name: Run smoke tests
+        run: python tests/smoke.py
+
+  android:
+    name: Build Android APK
+    needs: lint-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build APK
+        uses: ArtemSBulgakov/buildozer-action@v1.2.0
+        with:
+          command: buildozer android debug
+          buildozer_version: master
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Zed-APK
+          path: bin/*.apk
