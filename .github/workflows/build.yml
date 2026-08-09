@@ -19,10 +19,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+      - name: Install Xvfb for UI tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgl1 libegl1 libglib2.0-0
       - name: Compile check
         run: python -m compileall -q zed main.py tests
-      - name: Run smoke tests
-        run: python tests/smoke.py
+      - name: Run smoke tests (with UI)
+        run: |
+          export LIBGL_ALWAYS_SOFTWARE=1
+          xvfb-run -a python tests/smoke.py
 
   android:
     name: Build Android APK

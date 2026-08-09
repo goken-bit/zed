@@ -2,7 +2,6 @@ import os
 import sys
 import tempfile
 
-os.environ["KIVY_WINDOW"] = "mock"
 os.environ["KIVY_NO_ARGS"] = "1"
 os.environ["KIVY_LOG_MODE"] = "MIXED"
 

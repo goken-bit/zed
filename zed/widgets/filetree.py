@@ -31,7 +31,6 @@ class FileRow(Hoverable):
             self._bg = Rectangle()
             Color(*Theme.accent)
             self._bar = Rectangle(size=(2, 0))
-        self._draw()
 
         box = BoxLayout(size_hint=(1, 1), spacing=4, padding=(4, 0, 4, 0))
         self._indent = BoxLayout(size_hint=(None, 1), width=self.depth * 14)
@@ -53,6 +52,7 @@ class FileRow(Hoverable):
         box.add_widget(glyph)
         box.add_widget(self.name_lbl)
         self.add_widget(box)
+        self._draw()
 
     def _draw(self, *a):
         self._bg.pos = self.pos
