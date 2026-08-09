@@ -150,6 +150,12 @@ def test_app_build():
     with open(hello) as f:
         content = f.read()
     check("app saves", "x" in content)
+
+    runfile = os.path.join(tmp, "run.py")
+    with open(runfile, "w") as f:
+        f.write("import os\nos.write(1, b'APP_RAN_OK\\n')\n")
+    app.open_file(runfile)
+
     app.open_settings()
     app.cycle_theme()
     app.toggle_sidebar()
